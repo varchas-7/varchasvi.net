@@ -132,18 +132,29 @@
       background: #3a1220
     }
 
+    .blur {
+      position: absolute;
+      inset: -8px;
+      filter: blur(5px) brightness(.62) saturate(1.1);
+      overflow: hidden
+    }
+
     .bg {
       position: absolute;
-      inset: -8%;
+      inset: 0;
       background-size: cover;
       background-position: 50% 30%;
-      filter: blur(5px) brightness(.62) saturate(1.1);
-      animation: zoom 26s ease-in-out infinite alternate
+      will-change: transform;
+      animation: zoom 20s ease-in-out infinite alternate
     }
 
     @keyframes zoom {
+      from {
+        transform: scale(1)
+      }
+
       to {
-        transform: scale(1.18)
+        transform: scale(1.25)
       }
     }
 
@@ -397,8 +408,6 @@
     }
 
     @media (prefers-reduced-motion:reduce) {
-
-      .bg,
       .cue {
         animation: none
       }
@@ -418,7 +427,9 @@
     <p class="small" data-t="with"></p>
     <div class="arch">
       <div class="arch-in">
-        <div class="bg" id="bg"></div>
+        <div class="blur">
+          <div class="bg" id="bg"></div>
+        </div>
         <div class="names">
           <div class="script n" data-t="groom"></div>
           <div class="amp">&amp;</div>
@@ -468,22 +479,21 @@
     const MYS = { en: ["Srinidhi Convention Hall", "Mysuru, Karnataka, India"], kn: ["ಶ್ರೀನಿಧಿ ಕನ್ವೆನ್ಷನ್ ಹಾಲ್", "ಮೈಸೂರು, ಕರ್ನಾಟಕ, ಭಾರತ"] };
     const M1 = "https://maps.app.goo.gl/jxM9RaZeTsUBkQcu8", M2 = "https://maps.app.goo.gl/42VDW7RnwDCXsgFE9";
     const EV = [
-      { name: { en: "Wedding", kn: "ವಿವಾಹ" }, date: { en: "Monday, 15 February 2027", kn: "ಸೋಮವಾರ, ೧೫ ಫೆಬ್ರವರಿ ೨೦೨೭" }, time: { en: "10:00 AM onwards", kn: "ಬೆಳಿಗ್ಗೆ ೧೦ ಗಂಟೆಯಿಂದ" }, meal: { en: "Followed by lunch", kn: "ನಂತರ ಭೋಜನ" }, v: HAS, map: M1, g: "20270215T100000/20270215T140000" },
-      { name: { en: "Reception", kn: "ಆರತಕ್ಷತೆ" }, date: { en: "Monday, 15 February 2027", kn: "ಸೋಮವಾರ, ೧೫ ಫೆಬ್ರವರಿ ೨೦೨೭" }, time: { en: "7:00 PM onwards", kn: "ಸಂಜೆ ೭ ಗಂಟೆಯಿಂದ" }, meal: { en: "Followed by dinner", kn: "ನಂತರ ರಾತ್ರಿ ಭೋಜನ" }, v: HAS, map: M1, g: "20270215T190000/20270215T220000" },
+      { name: { en: "Reception", kn: "ಆರತಕ್ಷತೆ" }, date: { en: "Sunday, 14 February 2027", kn: "ಭಾನುವಾರ, ೧೪ ಫೆಬ್ರವರಿ ೨೦೨೭" }, time: { en: "7:00 PM onwards", kn: "ಸಂಜೆ ೭ ಗಂಟೆಯಿಂದ" }, meal: { en: "Followed by dinner", kn: "ನಂತರ ರಾತ್ರಿ ಭೋಜನ" }, v: HAS, map: M1, g: "" },
+      { name: { en: "Wedding", kn: "ವಿವಾಹ" }, date: { en: "Monday, 15 February 2027", kn: "ಸೋಮವಾರ, ೧೫ ಫೆಬ್ರವರಿ ೨೦೨೭" }, time: { en: "10:00 AM onwards", kn: "ಬೆಳಿಗ್ಗೆ ೧೦ ಗಂಟೆಯಿಂದ" }, meal: { en: "Followed by lunch", kn: "ನಂತರ ಭೋಜನ" }, v: HAS, map: M1, g: "" },
       { name: { en: "Reception", kn: "ಆರತಕ್ಷತೆ" }, date: { en: "Sunday, 21 February 2027", kn: "ಭಾನುವಾರ, ೨೧ ಫೆಬ್ರವರಿ ೨೦೨೭" }, time: { en: "10:00 AM onwards", kn: "ಬೆಳಿಗ್ಗೆ ೧೦ ಗಂಟೆಯಿಂದ" }, meal: { en: "Followed by lunch — vegetarian & non-vegetarian", kn: "ನಂತರ ಭೋಜನ — ಸಸ್ಯಾಹಾರ ಮತ್ತು ಮಾಂಸಾಹಾರ" }, v: MYS, map: M2, g: "20270221T100000/20270221T140000" }];
     let L = "en";
     const $ = s => document.querySelector(s);
     $("#bg").style.backgroundImage = "url(" + P[0] + ")";
     $("#car").innerHTML = P.map((p, i) => `<figure class="slide"><img src="${p}" alt="" loading="lazy"><p data-c="${i}"></p></figure>`).join("");
     $("#dots").innerHTML = P.map(() => "<i></i>").join("");
-    $("#evs").innerHTML = EV.map((e, i) => `<article class="ev"><h3 data-e="${i}.name"></h3><p class="date" data-e="${i}.date"></p><p class="t" data-e="${i}.time"></p><p class="m" data-e="${i}.meal"></p><div class="v"><b data-e="${i}.v0"></b><span data-e="${i}.v1"></span></div><div class="btns"><a class="btn p" target="_blank" rel="noopener" href="${e.map}" data-t="dir"></a><a class="btn" target="_blank" rel="noopener" data-cal="${i}" data-t="cal"></a></div></article>`).join("");
-    $("#cd").innerHTML = ["d", "h", "m", "s"].map(k => `<div><b id="c${k}">0</b><span data-t="${k}"></span></div>`).join("");
+    $("#evs").innerHTML = EV.map((e, i) => `<article class="ev"><h3 data-e="${i}.name"></h3><p class="date" data-e="${i}.date"></p><p class="t" data-e="${i}.time"></p><p class="m" data-e="${i}.meal"></p><div class="v"><b data-e="${i}.v0"></b><span data-e="${i}.v1"></span></div><div class="btns"><a class="btn p" target="_blank" rel="noopener" href="${e.map}" data-t="dir"></a></div></article>`).join("");
+    $("#cd").innerHTML = ["d", "h", "m", "s"].map(k => `<div><b id="k${k}">0</b><span data-t="${k}"></span></div>`).join("");
     function setLang(l) {
       L = l; document.documentElement.lang = l === "kn" ? "kn" : "en";
       document.querySelectorAll("[data-t]").forEach(n => n.textContent = T[l][n.dataset.t]);
       document.querySelectorAll("[data-c]").forEach(n => n.textContent = CAP[n.dataset.c][l]);
       document.querySelectorAll("[data-e]").forEach(n => { const [i, k] = n.dataset.e.split("."); const e = EV[i]; n.textContent = k === "v0" ? e.v[l][0] : k === "v1" ? e.v[l][1] : e[k][l] });
-      document.querySelectorAll("[data-cal]").forEach(n => { const e = EV[n.dataset.cal]; n.href = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=" + encodeURIComponent("Varchasvi & Isha — " + e.name.en) + "&dates=" + e.g + "&ctz=Asia/Kolkata&location=" + encodeURIComponent(e.v.en.join(", ")) });
       document.querySelectorAll("#lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.l === l));
       try { localStorage.setItem("lang", l) } catch (x) { }
     }
@@ -492,7 +502,7 @@
     function dots() { const w = car.firstElementChild.offsetWidth + 14; const i = Math.min(P.length - 1, Math.round(car.scrollLeft / w)); document.querySelectorAll("#dots i").forEach((d, j) => d.classList.toggle("on", i === j)) }
     car.addEventListener("scroll", dots, { passive: true }); dots();
     const target = new Date("2027-02-15T10:00:00+05:30").getTime();
-    function tick() { let r = Math.max(0, target - Date.now()) / 1000; const v = { d: Math.floor(r / 86400), h: Math.floor(r % 86400 / 3600), m: Math.floor(r % 3600 / 60), s: Math.floor(r % 60) }; for (const k in v) $("#c" + k).textContent = v[k] }
+    function tick() { let r = Math.max(0, target - Date.now()) / 1000; const v = { d: Math.floor(r / 86400), h: Math.floor(r % 86400 / 3600), m: Math.floor(r % 3600 / 60), s: Math.floor(r % 60) }; for (const k in v) $("#k" + k).textContent = v[k] }
     tick(); setInterval(tick, 1000);
     let s0 = "en"; try { s0 = localStorage.getItem("lang") || "en" } catch (x) { }
     setLang(s0 === "kn" ? "kn" : "en");
